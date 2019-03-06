@@ -1,10 +1,6 @@
 #include "wiperclass.h"
-#include <QDebug>
-#include <QProcess>
-#include <QTimer>
-//#include <fstream>
 
-//default constructor
+//default Constructor === set base object to work with declarations and connections
 wiperClass::wiperClass(QObject *parent) : QObject(parent)
 {
     //qDebug("I live!!");
@@ -13,7 +9,7 @@ wiperClass::wiperClass(QObject *parent) : QObject(parent)
     critical = new validData[critVals];//array to pass the critical values for the final test status
 }
 
-//destructor
+//Destructor === destroy pointers to free up memory
 wiperClass::~wiperClass(){
     //qDebug("I dyin'");
     delete file;
@@ -23,7 +19,7 @@ wiperClass::~wiperClass(){
     delete critical;
 }
 
-//public slots
+//Public Slots
 void wiperClass::killProcess(){
     toolBox->kill();
 }
@@ -57,7 +53,7 @@ void wiperClass::startDrive(){
     file->close();
 }
 
-//private
+//Private Functions
 bool wiperClass::idDrive(){
     qDebug("running hdparm");
     toolBox->start("sudo hdparm -I /dev/sdb");

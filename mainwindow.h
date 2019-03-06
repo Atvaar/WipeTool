@@ -2,6 +2,13 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QRegularExpression>
+#include <QObject>
+#include <QAction>
+#include <QDebug>
+#include <QThread>
+#include "automonitor.h"
+#include "wiperclass.h"
 
 namespace Ui {
 class MainWindow;
@@ -25,6 +32,7 @@ signals:
 
 private:
     Ui::MainWindow *ui;
+    bool autoStartFlag;
 };
 
 #endif // MAINWINDOW_H

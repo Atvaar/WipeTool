@@ -1,12 +1,16 @@
 #ifndef WIPERCLASS_H
 #define WIPERCLASS_H
 
+#include <QRegularExpression>
 #include <QObject>
 #include <QString>
 #include <QProcess>
+#include <QDebug>
+#include <QTimer>
 #include <iostream>
 #include <stdio.h>
 #include <fstream>
+
 using namespace std;
 
 struct validData{

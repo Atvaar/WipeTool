@@ -1,11 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "automonitor.h"
-#include "wiperclass.h"
-#include <QObject>
-#include <QAction>
-#include <QDebug>
-#include <QThread>
 
 AutoMonitor *Milton;
 QThread *workerBee;
@@ -16,13 +10,14 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    autoStartFlag = true;//wipe as soon as detected?
     ui->setupUi(this);
     Milton = new AutoMonitor(this);
-    //qDebug("swingline");
+    //qDebug("butz mi stahpler");
     workerBee = new QThread(this);
     //qDebug("pardon me sir");
     driveWiper = new wiperClass();
-    //qDebug("dats my red swingline stapler");
+    //qDebug("dats mi rud swinline stahpler");
     driveWiper->moveToThread(workerBee);
     //qDebug("i burn dis place");
     workerBee->start();
@@ -37,7 +32,13 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-
+    //add disconnects
+    QObject::disconnect(Milton, &AutoMonitor::tellMainDriveDetect, this, &MainWindow::getDriveInfo);
+    QObject::disconnect(Milton, &AutoMonitor::tellMainDriveRemoved, this, &MainWindow::leaveDriveInfo);
+    QObject::disconnect(ui->pushButton, &QPushButton::clicked, this , &MainWindow::wipeDrive);
+    QObject::disconnect(driveWiper,&wiperClass::clearStatus,ui->textBrowser, &QTextBrowser::clear);
+    QObject::disconnect(driveWiper, &wiperClass::statusUpdate, ui->textBrowser, &QTextBrowser::setText);
+    QObject::disconnect(this, &MainWindow::startWipe, driveWiper, &wiperClass::startDrive);
     delete driveWiper;
     workerBee->quit();
     delete Milton;

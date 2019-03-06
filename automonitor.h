@@ -1,9 +1,17 @@
 #ifndef AUTOMONITOR_H
 #define AUTOMONITOR_H
 
-#include <QObject>
+#include <QRegularExpression>
 #include <QProcess>
+#include <QObject>
+#include <QString>
+#include <QDebug>
+#include <regex>
+#include <iostream>
+#include <stdio.h>
 
+
+//need to add apperatus for loading the number and designation of hdd bays
 class AutoMonitor : public QObject
 {
     Q_OBJECT

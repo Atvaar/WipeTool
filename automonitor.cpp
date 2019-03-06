@@ -1,9 +1,4 @@
 #include "automonitor.h"
-#include <QProcess>
-#include <stdio.h>
-#include <iostream>
-#include <QString>
-#include <QDebug>
 
 AutoMonitor::AutoMonitor(QObject *parent) : QObject(parent)
 {
