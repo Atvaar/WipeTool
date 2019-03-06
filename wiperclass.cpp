@@ -8,9 +8,9 @@
 wiperClass::wiperClass(QObject *parent) : QObject(parent)
 {
     //qDebug("I live!!");
-    file = new std::fstream();
-    toolBox = new QProcess(this);
-    critical = new validData[critVals];
+    file = new std::fstream();//for making the log
+    toolBox = new QProcess(this);//process for system calls in test
+    critical = new validData[critVals];//array to pass the critical values for the final test status
 }
 
 //destructor
