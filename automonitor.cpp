@@ -2,7 +2,7 @@
 
 AutoMonitor::AutoMonitor(QObject *parent) : QObject(parent)
 {
-    driveStatFlag = false;
+    //driveStatFlag = false;
     monitor = new QProcess;
     //monitor->setProgram("udisksctl");
     //monitor->setArguments(QStringList() << "monitor");
@@ -38,14 +38,16 @@ void AutoMonitor::DriveChange(){
     QString Data = monitor->readAllStandardOutput();
 
     //is the drive inserted or removed
-    if (Data.contains("Added") and driveStatFlag==false and !Data.contains("jobs")){
-        driveStatFlag = true;
+    if (Data.contains("Added") /*and driveStatFlag==false */and !Data.contains("jobs")){
+        //driveStatFlag = true;
         //find drive designation
         //find hardware address
         emit tellMainDriveDetect(driveDesig);
     }
-    else if (Data.contains("Removed") and driveStatFlag==true and !Data.contains("jobs")){
-        driveStatFlag = false;
+    else if (Data.contains("Removed") /*and driveStatFlag==true */and !Data.contains("jobs")){
+        //create QRecularExpression object
+        //run regex find in Data the drive and set to driveDesig
+        //driveStatFlag = false;
         emit tellMainDriveRemoved(driveDesig);
     }
     //else qDebug() << "OREO!";

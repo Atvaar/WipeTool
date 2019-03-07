@@ -11,6 +11,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     autoStartFlag = true;//wipe as soon as detected?
+    //sudo dmidecode -s system-serial-number
+    //load config file and set mahConfig
+    //update
     ui->setupUi(this);
     Milton = new AutoMonitor(this);
     //qDebug("butz mi stahpler");
@@ -65,4 +68,12 @@ void MainWindow::wipeDrive(){
     qDebug() << "Begining wipe on drive: " << myDrive;
     emit startWipe("sdb");
     ui->pushButton->setEnabled(false);
+}
+
+
+bool MainWindow::loadConfig(){
+    //open config file
+    //read geometry values
+    //dynamically set size and hardware desigs for mahConfig and geometry
+    return true;
 }

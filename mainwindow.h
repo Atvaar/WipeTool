@@ -11,8 +11,18 @@
 #include "wiperclass.h"
 
 namespace Ui {
+
 class MainWindow;
 }
+struct bayConfig //structure for instanciating the hdd bay configuration
+{
+    int bayNum;
+    bool occupiedFlag;
+    QString ataAddress;
+    QString scsiAddress;
+    QString resident;
+    //bayConfig() {}
+};
 
 class MainWindow : public QMainWindow
 {
@@ -33,6 +43,8 @@ signals:
 private:
     Ui::MainWindow *ui;
     bool autoStartFlag;
+    bool loadConfig();
+    bayConfig *mahConfig;
 };
 
 #endif // MAINWINDOW_H

@@ -31,7 +31,7 @@ private:
     void GehtSie();
     void HaltSie();
     QString ChangeDecipher();
-    bool driveStatFlag;
+    //bool driveStatFlag;
 };
 
 #endif // AUTOMONITOR_H
