@@ -38,11 +38,14 @@ public slots:
     void startDrive();
 
 private:
-    bool idDrive();
-    bool smartDrive1();
-    bool initWipe();
-    bool smartDrive2();
-    bool testStatus();
+    bool idDrive();//hdparm -I
+    bool smartDrive1();//smartctl -a "First SMART check"
+    bool rmDCO();//hdparm "remove DCO if present"
+    bool rmHPA();//hdparm "remove HPA if present"
+    bool initWipe();//time hdparm security-secure-erase "Begin wipe of drive" halts waiting for finish
+    bool initWipe(QString);//for other wipe methods
+    bool smartDrive2();//smartctl -a "Second SMART check"
+    bool testStatus();//final passfail status
     int critVals = 9;
     validData *critical;
     QProcess *toolBox;

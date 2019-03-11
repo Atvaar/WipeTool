@@ -26,6 +26,7 @@ void wiperClass::killProcess(){
 
 void wiperClass::startDrive(){
     //open log file
+    //later replace with date and drive serial
     file->open("./disk.log",ios::app);
 
     bool testFlag = idDrive();
@@ -82,6 +83,35 @@ bool wiperClass::smartDrive1(){
     return status;
 }
 
+
+bool wiperClass::rmDCO(){//hdparm "remove DCO if present"
+    //qDebug("running smart check");
+    //toolBox->start("sudo smartctl -a /dev/sdb");
+    //qDebug("waiting for smart");
+    //toolBox->waitForFinished(3000);
+    //qDebug("smart check complete");
+    //QString smartData = toolBox->readAllStandardOutput();
+    //qDebug() << smartData;
+    //*file << smartData.toStdString().c_str();//log
+    //emit statusUpdate(smartData);
+    bool status = true;
+    return status;
+}
+
+bool wiperClass::rmHPA(){//hdparm "remove HPA if present"
+    //qDebug("running smart check");
+    //toolBox->start("sudo smartctl -a /dev/sdb");
+    //qDebug("waiting for smart");
+    //toolBox->waitForFinished(3000);
+    //qDebug("smart check complete");
+    //QString smartData = toolBox->readAllStandardOutput();
+    //qDebug() << smartData;
+    //*file << smartData.toStdString().c_str();//log
+    //emit statusUpdate(smartData);
+    bool status = true;
+    return status;
+}
+
 bool wiperClass::initWipe(){
     //set security for the drive
     qDebug("initializing Security Features");
@@ -108,6 +138,12 @@ bool wiperClass::initWipe(){
     return status;
 }
 
+bool initWipe(QString newMethod){//for other wipe methods
+    //find newMeshod QString in methods folder and load procedure
+    bool status = true;
+    return status;
+}
+
 bool wiperClass::smartDrive2(){
     qDebug("running 2nd smart check");
     toolBox->start("sudo smartctl -a /dev/sdb");
@@ -125,7 +161,7 @@ bool wiperClass::smartDrive2(){
 
 bool wiperClass::testStatus(){
     bool passFail =false;
-    //get formula
+    //get formula - use Acronis formula for 9 stats 100%
     //for each stat apply weight
     //for each stat apply formula
     //if pass set passFail true if fail set false
