@@ -1,7 +1,7 @@
 #include "wiperclass.h"
 
 //default Constructor === set base object to work with declarations and connections
-wiperClass::wiperClass(QObject *parent) : QObject(parent)
+wiperClass::wiperClass(QObject *parent,validData *thisDrive) : QObject(parent)
 {
     //qDebug("I live!!");
     file = new std::fstream();//for making the log

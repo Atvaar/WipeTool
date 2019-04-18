@@ -10,13 +10,15 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-    autoStartFlag = true;//wipe as soon as detected?
+    autoStartFlag = false;//wipe as soon as detected?
     //sudo dmidecode -s system-serial-number
     //load config file and set mahConfig
     //update
     ui->setupUi(this);
     Milton = new AutoMonitor(this);
     //qDebug("butz mi stahpler");
+    //get bays from config,  replace below with thread and test object for each bay
+    //*****************************************
     workerBee = new QThread(this);
     //qDebug("pardon me sir");
     driveWiper = new wiperClass();
@@ -24,9 +26,10 @@ MainWindow::MainWindow(QWidget *parent) :
     driveWiper->moveToThread(workerBee);
     //qDebug("i burn dis place");
     workerBee->start();
+    //******************************************
 
-    QObject::connect(Milton, &AutoMonitor::tellMainDriveDetect, this, &MainWindow::getDriveInfo);
-    QObject::connect(Milton, &AutoMonitor::tellMainDriveRemoved, this, &MainWindow::leaveDriveInfo);
+    //QObject::connect(Milton, &AutoMonitor::tellMainDriveDetect, this, &MainWindow::getDriveInfo);
+    //QObject::connect(Milton, &AutoMonitor::tellMainDriveRemoved, this, &MainWindow::leaveDriveInfo);
     QObject::connect(ui->pushButton, &QPushButton::clicked, this , &MainWindow::wipeDrive);
     QObject::connect(driveWiper,&wiperClass::clearStatus,ui->textBrowser, &QTextBrowser::clear);
     QObject::connect(driveWiper, &wiperClass::statusUpdate, ui->textBrowser, &QTextBrowser::setText);
@@ -36,8 +39,8 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     //add disconnects
-    QObject::disconnect(Milton, &AutoMonitor::tellMainDriveDetect, this, &MainWindow::getDriveInfo);
-    QObject::disconnect(Milton, &AutoMonitor::tellMainDriveRemoved, this, &MainWindow::leaveDriveInfo);
+    //QObject::disconnect(Milton, &AutoMonitor::tellMainDriveDetect, this, &MainWindow::getDriveInfo);
+    //QObject::disconnect(Milton, &AutoMonitor::tellMainDriveRemoved, this, &MainWindow::leaveDriveInfo);
     QObject::disconnect(ui->pushButton, &QPushButton::clicked, this , &MainWindow::wipeDrive);
     QObject::disconnect(driveWiper,&wiperClass::clearStatus,ui->textBrowser, &QTextBrowser::clear);
     QObject::disconnect(driveWiper, &wiperClass::statusUpdate, ui->textBrowser, &QTextBrowser::setText);
@@ -46,14 +49,21 @@ MainWindow::~MainWindow()
     workerBee->quit();
     delete Milton;
     delete workerBee;
+    //update config file with any updates.
     delete ui;
 }
 
 void MainWindow::getDriveInfo(QString drive){
     qDebug() << "Drive Detected:  " << drive;
-    myDrive = drive;
-    ui->pushButton->setEnabled(true);
-    ui->pushButton->setText("Start Wipe on drive: " + drive + "?");
+    //udisksctl info -b /dev/sdb | grep /by-path/
+    if (autoStartFlag == false){
+        myDrive = drive;
+        ui->pushButton->setEnabled(true);
+        ui->pushButton->setText("Start Wipe on drive: " + drive + "?");
+    }
+    else if (autoStartFlag == true){
+        //emit autostart signal and have it kick of the correct workerbee with drive name.
+    }
 }
 
 void MainWindow::leaveDriveInfo(QString drive){
@@ -75,5 +85,7 @@ bool MainWindow::loadConfig(){
     //open config file
     //read geometry values
     //dynamically set size and hardware desigs for mahConfig and geometry
+    //read test threshholds and update
+    //read update server config and update config.
     return true;
 }

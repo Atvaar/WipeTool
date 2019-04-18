@@ -24,12 +24,7 @@ struct bayConfig //structure for instanciating the hdd bay configuration
     //bayConfig() {}
 };
 
-struct driveStatus
-{
-    int testVal;
-    int criticalValue;
-    long long rawValue;
-};
+
 
 class MainWindow : public QMainWindow
 {
@@ -46,6 +41,7 @@ public slots:
 
 signals:
     void startWipe(QString);
+    void autoStart(int);
 
 private:
     Ui::MainWindow *ui;

@@ -15,6 +15,7 @@ using namespace std;
 
 struct validData{
     int indexNum;
+    int smartNum;
     int weight;
     int value;
 };
@@ -23,7 +24,7 @@ class wiperClass : public QObject
 {
     Q_OBJECT
 public:
-    explicit wiperClass(QObject *parent = nullptr);
+    explicit wiperClass(QObject *parent = nullptr, validData *thisDrive = nullptr);
     ~wiperClass();
 
 signals:

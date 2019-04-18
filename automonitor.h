@@ -2,14 +2,14 @@
 #define AUTOMONITOR_H
 
 #include <QRegularExpression>
+//#include <QRegExp>
 #include <QProcess>
 #include <QObject>
 #include <QString>
 #include <QDebug>
-#include <regex>
 #include <iostream>
 #include <stdio.h>
-
+//#include <regex>
 
 //need to add apperatus for loading the number and designation of hdd bays
 class AutoMonitor : public QObject
@@ -21,6 +21,7 @@ public:
 
 signals:
     void tellMainDriveDetect(QString drive);
+    void tellMainWhichDriveDetect(QString);
     void tellMainDriveRemoved(QString drive);
 
 public slots:
