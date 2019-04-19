@@ -10,6 +10,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    QString zero = "/dev/disk/by-path/pci-0000:00:1a.7-usb-0:3.1:1.0-scsi-0:0:0:0";
+    QString one = "/dev/disk/by-path/pci-0000:00:1a.7-usb-0:3.1:1.0-scsi-0:0:0:1";
     autoStartFlag = false;//wipe as soon as detected?
     //sudo dmidecode -s system-serial-number
     //load config file and set mahConfig

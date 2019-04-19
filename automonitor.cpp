@@ -34,25 +34,40 @@ void AutoMonitor::HaltSie(){
 //Slots
 void AutoMonitor::DriveChange(){
     QString driveDesig = "/dev/sdb";
+    QString driveSlot;
     QString Data = monitor->readAllStandardOutput();
 
     //is the drive inserted or removed
     if (Data.contains("Added /org/freedesktop/UDisks2/block_devices/") /*and driveStatFlag==false */and !Data.contains("jobs")){
-        qDebug() << "drive added \n";
+        //qDebug() << "drive added \n";
         int snipStart = Data.indexOf("block_devices") + 14;
         int snipEnd = Data.indexOf("\n") - snipStart;
         QString snipIt = Data.mid(snipStart,snipEnd);
         driveDesig = "/dev/" + snipIt;
-        qDebug() << snipIt;
+        //qDebug() << snipIt;
 
-        emit tellMainDriveDetect(driveDesig);
+        //QProcess udisksctl info -b "driveDesig"
+        QString getMe = QString("udisksctl info -b ") + driveDesig;
+        //qDebug() << getMe;
+        QProcess findSlot;
+        findSlot.start(getMe);
+        findSlot.waitForFinished(10000);
+        getMe = findSlot.readAllStandardOutput();
+        snipStart = getMe.indexOf("/dev/disk/by-path/");
+        snipEnd = getMe.indexOf("\n",snipStart,Qt::CaseInsensitive) - snipStart;
+        driveSlot = getMe.mid(snipStart, snipEnd);
+        //qDebug() << snipStart;
+        //qDebug() << snipEnd;
+        //qDebug() << "drive in slot: " << driveSlot;
+
+        emit tellMainDriveDetect(driveDesig, driveSlot);
     }
     else if (Data.contains("Removed /org/freedesktop/UDisks2/block_devices/") /*and driveStatFlag==true */and !Data.contains("jobs")){
-        qDebug() << "drive removed \n";
+        //qDebug() << "drive removed";
         int snipStart = Data.indexOf("block_devices") + 14;
         int snipEnd = Data.indexOf("\n") - snipStart;
         QString snipIt = Data.mid(snipStart,snipEnd);
-        qDebug() << snipIt;
+        //qDebug() << snipIt;
         driveDesig = "/dev/" + snipIt;
         emit tellMainDriveRemoved(driveDesig);
     }

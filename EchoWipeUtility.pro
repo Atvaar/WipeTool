@@ -27,12 +27,15 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     automonitor.cpp \
-    wiperclass.cpp
+    wiperclass.cpp \
+    baypanel.cpp
 
 HEADERS += \
         mainwindow.h \
     automonitor.h \
-    wiperclass.h
+    wiperclass.h \
+    baypanel.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    baypanel.ui

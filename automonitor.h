@@ -9,6 +9,7 @@
 #include <QDebug>
 #include <iostream>
 #include <stdio.h>
+#include <string>
 //#include <regex>
 
 //need to add apperatus for loading the number and designation of hdd bays
@@ -20,7 +21,7 @@ public:
     ~AutoMonitor();
 
 signals:
-    void tellMainDriveDetect(QString drive);
+    void tellMainDriveDetect(QString drive, QString whichSlot);
     void tellMainWhichDriveDetect(QString);
     void tellMainDriveRemoved(QString drive);
 
