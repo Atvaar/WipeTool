@@ -58,17 +58,17 @@ void AutoMonitor::DriveChange(){
         driveSlot = getMe.mid(snipStart, snipEnd);
         //qDebug() << snipStart;
         //qDebug() << snipEnd;
-        //qDebug() << "drive in slot: " << driveSlot;
+        qDebug() << "drive in slot: " << driveSlot;
 
         emit tellMainDriveDetect(driveDesig, driveSlot);
     }
     else if (Data.contains("Removed /org/freedesktop/UDisks2/block_devices/") /*and driveStatFlag==true */and !Data.contains("jobs")){
-        //qDebug() << "drive removed";
         int snipStart = Data.indexOf("block_devices") + 14;
         int snipEnd = Data.indexOf("\n") - snipStart;
         QString snipIt = Data.mid(snipStart,snipEnd);
         //qDebug() << snipIt;
         driveDesig = "/dev/" + snipIt;
+        qDebug() << "drive removed :" << driveDesig;
         emit tellMainDriveRemoved(driveDesig);
     }
 }

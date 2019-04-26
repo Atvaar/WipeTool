@@ -18,15 +18,17 @@ class BayPanel : public QWidget
 public:
     explicit BayPanel(QWidget *parent = 0);
     ~BayPanel();
-    void setID(QString[], int, QString);//String array for hardware location, int bay number, QString for other orientation info
+    //void setID(QString[], int, QString);//String array for hardware location, int bay number, QString for other orientation info
 
 public slots:
     void setThreshHolds(validData[]);//so that the pass fail criteria can be changed on the fly
-    void catchDrive(QString, QString);//if drive detect QString drive letter, QString drive address... is it mine
+    void catchDrive(QString);//if drive detect QString drive letter, QString drive address... is it mine
 
 private:
     Ui::BayPanel *ui;
     void updateThreshHolds(validData[]);
+    QThread *wiperThread;
+    wiperClass *thisWiper;
 };
 
 #endif // BAYPANEL_H

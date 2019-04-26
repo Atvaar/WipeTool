@@ -25,9 +25,12 @@
    <property name="currentIndex">
     <number>0</number>
    </property>
+   <property name="usesScrollButtons">
+    <bool>false</bool>
+   </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
-     <string>Tab 1</string>
+     <string>WipeStatus</string>
     </attribute>
     <widget class="QProgressBar" name="progressBar">
      <property name="geometry">
@@ -74,7 +77,7 @@
    </widget>
    <widget class="QWidget" name="tab_2">
     <attribute name="title">
-     <string>Tab 2</string>
+     <string>DriveDetail</string>
     </attribute>
     <widget class="QPushButton" name="pushButton_2">
      <property name="geometry">
