@@ -11,23 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     //look for command line arguments to set url and confing locations. user and password to use
-    QGridLayout *mainLayout;
-    QString baysATA[2] = {"/dev/disk/by-path/pci-0000:00:1a.7-usb-0:3.1:1.0-scsi-0:0:0:0", "/dev/disk/by-path/pci-0000:00:1a.7-usb-0:3.1:1.0-scsi-0:0:0:1"};
-    autoStartFlag = false;//wipe as soon as detected?
-    bays = 2;
-    sections = 1;
-    mahConfig = new bayConfig[bays];
-    mahConfig[0] = { 0, 1, false, baysATA[0],baysATA[0],"",new BayPanel};
-    mahConfig[1] = { 1, 1, false, baysATA[1],baysATA[1],"",new BayPanel};
-    //ui->scrollArea->setLayout(mainLayout);
-    //sudo dmidecode -s system-serial-number
-    //load config file and set mahConfig
-    //update
-    ui->setupUi(this);
-    mainLayout = new QGridLayout(ui->scrollArea);
-    mainLayout->setHorizontalSpacing(0);
-    mainLayout->addWidget(mahConfig[0].workBay,0,0);
-    mainLayout->addWidget(mahConfig[1].workBay,0,1);
+
     Milton = new AutoMonitor(this);
     bool didItWork = loadConfig();
     if (didItWork != true){
@@ -35,19 +19,22 @@ MainWindow::MainWindow(QWidget *parent) :
         //dynamic load bays on insert
     } else {
         //load static gui on config file
+        //change this section to load off of the dynamic info out of loadConfig();
+        QGridLayout *mainLayout;
+        QString baysATA[2] = {"/dev/disk/by-path/pci-0000:00:1a.7-usb-0:3.1:1.0-scsi-0:0:0:0", "/dev/disk/by-path/pci-0000:00:1a.7-usb-0:3.1:1.0-scsi-0:0:0:1"};
+        autoStartFlag = false;//wipe as soon as detected?
+        bays = 2;
+        sections = 1;
+        mahConfig = new bayConfig[bays];
+        mahConfig[0] = { 0, 1, false, baysATA[0],baysATA[0],"",new BayPanel};
+        mahConfig[1] = { 1, 1, false, baysATA[1],baysATA[1],"",new BayPanel};
+        //update
+        ui->setupUi(this);
+        mainLayout = new QGridLayout(ui->scrollArea);
+        mainLayout->setHorizontalSpacing(0);
+        mainLayout->addWidget(mahConfig[0].workBay,0,0);
+        mainLayout->addWidget(mahConfig[1].workBay,0,1);
     }
-
-    //qDebug("butz mi stahpler");
-    //get bays from config,  replace below with thread and test object for each bay
-    //*****************************************
-    //workerBee = new QThread(this);
-    //qDebug("pardon me sir");
-    //driveWiper = new wiperClass();
-    //qDebug("dats mi rud swinline stahpler");
-    //driveWiper->moveToThread(workerBee);
-    //qDebug("i burn dis place");
-    //workerBee->start();
-    //******************************************
 
     //QObject::connect(Milton, &AutoMonitor::tellMainDriveDetect, this, &MainWindow::getDriveInfo);
     //QObject::connect(Milton, &AutoMonitor::tellMainDriveRemoved, this, &MainWindow::leaveDriveInfo);
