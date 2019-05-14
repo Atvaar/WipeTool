@@ -12,6 +12,8 @@
 #include "baypanel.h"
 #include <QGridLayout>
 #include <QLayout>
+#include <string.h>
+#include <stdio.h>
 
 namespace Ui {
 
@@ -43,7 +45,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(int argc, char **argv, QWidget *parent = 0);
     ~MainWindow();
 
 public slots:

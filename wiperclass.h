@@ -20,6 +20,21 @@ struct validData{
     int value;
 };
 
+struct TestBundle{
+    QString TestName;
+    int TestStatus;//0 = not completed, 1 = passed, 2 = failed
+};
+
+struct driveData{
+    QString driveSerial;
+    QString driveModel;
+    QString driveFW;
+    QString driveSize;
+    QString TestDate;
+    TestBundle *driveTest;
+    QString DriveStatus;
+};
+
 class wiperClass : public QObject
 {
     Q_OBJECT

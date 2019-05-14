@@ -22,10 +22,15 @@ public:
 
 signals:
     void sendReport(QString);
+    void sendUIUpdate(int, QString, int, bool);
+
 public slots:
     void setThreshHolds(validData[]);//so that the pass fail criteria can be changed on the fly
     void catchDrive(QString);//if drive detect QString drive letter, QString drive address... is it mine
-    //void updateUI(int, QString, int,bool);
+    void takeDrive(QString);
+
+private slots:
+    void updateUI(int, QString, int, bool);//keeping ui updates clean and behind private
 
 private:
     Ui::BayPanel *ui;
@@ -33,6 +38,13 @@ private:
     QThread *wiperThread;
     wiperClass *thisWiper;
     void writeLog();
+    bool autoStart;
+    QString activeDrive;
+    QString driveSerial;
+    QString driveModel;
+    QString driveSize;
+    QString driveFW;
+    void getDriveInfo();
 };
 
 #endif // BAYPANEL_H
