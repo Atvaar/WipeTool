@@ -51,10 +51,6 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent) :
 
     QObject::connect(Milton, &AutoMonitor::tellMainDriveDetect, this, &MainWindow::getDriveInfo);
     QObject::connect(Milton, &AutoMonitor::tellMainDriveRemoved, this, &MainWindow::leaveDriveInfo);
-    //QObject::connect(ui->pushButton, &QPushButton::clicked, this , &MainWindow::wipeDrive);
-    //QObject::connect(driveWiper,&wiperClass::clearStatus,ui->textBrowser, &QTextBrowser::clear);
-    //QObject::connect(driveWiper, &wiperClass::statusUpdate, ui->textBrowser, &QTextBrowser::setText);
-    //QObject::connect(this, &MainWindow::startWipe, driveWiper, &wiperClass::startDrive);
 }
 
 MainWindow::~MainWindow()
@@ -62,10 +58,6 @@ MainWindow::~MainWindow()
     //add disconnects
     QObject::disconnect(Milton, &AutoMonitor::tellMainDriveDetect, this, &MainWindow::getDriveInfo);
     QObject::disconnect(Milton, &AutoMonitor::tellMainDriveRemoved, this, &MainWindow::leaveDriveInfo);
-    //QObject::disconnect(ui->pushButton, &QPushButton::clicked, this , &MainWindow::wipeDrive);
-    //QObject::disconnect(driveWiper,&wiperClass::clearStatus,ui->textBrowser, &QTextBrowser::clear);
-    //QObject::disconnect(driveWiper, &wiperClass::statusUpdate, ui->textBrowser, &QTextBrowser::setText);
-    //QObject::disconnect(this, &MainWindow::startWipe, driveWiper, &wiperClass::startDrive);
     //delete driveWiper;
     ///workerBee->quit();
     //delete Milton;

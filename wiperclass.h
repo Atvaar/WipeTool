@@ -1,8 +1,9 @@
 #ifndef WIPERCLASS_H
 #define WIPERCLASS_H
 
-#include <QRegularExpression>
 #include <QObject>
+#include <QWidget>
+#include <QAction>
 #include <QString>
 #include <QProcess>
 #include <QDebug>
@@ -41,20 +42,23 @@ class wiperClass : public QObject
 public:
     explicit wiperClass(QObject *parent = nullptr, validData *thisDrive = nullptr);
     ~wiperClass();
+    void recieveDrive(QString drive);
+    void removeDrive(QString drive);
 
 signals:
-    void statusUpdate(QString);
+    void statusUpdate(int, QString, int, bool);
     void clearStatus();
     void error(QString);
     void finished(QString);
     void testFinished(bool);
+    void recieved();
+    void removed();
 
 public slots:
     void killProcess();
     void startDrive();
 
 private:
-    bool idDrive();//hdparm -I
     bool smartDrive1();//smartctl -a "First SMART check"
     bool rmDCO();//hdparm "remove DCO if present"
     bool rmHPA();//hdparm "remove HPA if present"
@@ -62,8 +66,12 @@ private:
     bool initWipe(QString);//for other wipe methods
     bool smartDrive2();//smartctl -a "Second SMART check"
     bool testStatus();//final passfail status
+    void idDrive();//hdparm -I
     int critVals = 9;
+    bool autoStart;
+    QString whichDrive;
     validData *critical;
+    driveData thisDrive;
     QProcess *toolBox;
     std::fstream *file;
 };
