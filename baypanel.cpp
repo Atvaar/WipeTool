@@ -28,6 +28,7 @@ BayPanel::~BayPanel()
     QObject::disconnect(this->ui->pushButton, &QPushButton::clicked, thisWiper, &wiperClass::startDrive);
     delete thisWiper;
     wiperThread->quit();
+    wiperThread->wait();
     delete wiperThread;
     delete ui;
 }

@@ -39,7 +39,8 @@ void wiperClass::recieveDrive(QString drive){
 void wiperClass::startDrive(){
     //open log file
     //later replace with date and drive serial
-    file->open("./disk.log",ios::app);
+    QString filename = "./" + thisDrive.driveSerial + ".log";
+    file->open(filename.toStdString().c_str(),ios::app);
 
     bool testFlag;
 
@@ -48,23 +49,28 @@ void wiperClass::startDrive(){
         emit statusUpdate(0, thisDrive.driveSerial + ":starting smart", 1, false);
         //if fail then show fail
         qDebug("starting SMART-1");
-        //QProcess smartctl whichDrive
-        //
+        //note passed in smart1 test log
     } else {emit statusUpdate(0, thisDrive.driveSerial + ": FAILED", 3, true);}
 
-//    testFlag = initWipe();
-//    if (!testFlag){
-//        //if fail then show fail
-//    }
+    emit statusUpdate(10, thisDrive.driveSerial + ":wiping", 1, false);
+    testFlag = initWipe();
+    if (testFlag){
+        //if fail then show fail
+        emit statusUpdate(95, thisDrive.driveSerial + ":drive wiped", 1, false);
+        //note pass in
+    } else {emit statusUpdate(0, thisDrive.driveSerial + ": FAILED", 3, true);}
 
-//    testFlag = smartDrive2();
-//    if (!testFlag){
-//        //if fail then show fail
-//    }
-//    bool final = testStatus();
+    testFlag = smartDrive2();
+    if (testFlag){
+        //if fail then show fail
+        emit statusUpdate(98, thisDrive.driveSerial + ":drive wiped", 1, false);
+    } else {emit statusUpdate(0, thisDrive.driveSerial + ": FAILED", 3, true);}
+    bool final = testStatus();
 
-//    *file << "\nTest Status:" <<final;
-//    emit testFinished(final);
+    *file << "\nTest Status:" <<final;
+    //emit testFinished(final);
+
+    emit statusUpdate(100, thisDrive.driveSerial + ":PASSED", 2, true);
     file->close();
 }
 
@@ -109,7 +115,9 @@ void wiperClass::idDrive(){
 
 bool wiperClass::smartDrive1(){
     qDebug("running smart check");
-    toolBox->start("sudo smartctl -a /dev/sdb");
+    QString getMe = QString("sudo smartctl -a ") + whichDrive;
+//    toolBox->start("sudo smartctl -a /dev/sdb");
+    toolBox->start(getMe);
     qDebug("waiting for smart");
     toolBox->waitForFinished(3000);
     qDebug("smart check complete");
@@ -118,25 +126,24 @@ bool wiperClass::smartDrive1(){
     *file << smartData.toStdString().c_str();//log
 
     //change to new emit
-    //emit statusUpdate(smartData);
+    //emit updateSMART1(QString);
     bool status = true;
     return status;
 }
 
 void wiperClass::removeDrive(QString drive){
-    qDebug("made it this far");
+    //qDebug("made it this far");
     killProcess();
-    emit statusUpdate(0, "Empty", 4, false);
-
-//    if (whichDrive == drive){
-//        whichDrive = "";
-//        emit statusUpdate(0, "Empty", 4, false);
-//    }
-//    else {
-//        //fix to verify
-//        whichDrive = "error";
-//        emit error("failed for removing wrong drive");
-//    }
+    //emit statusUpdate(0, "Empty", 4, false);
+    if (whichDrive == drive){
+        whichDrive = "";
+        emit statusUpdate(0, "Empty", 4, false);
+    }
+    else {
+        //fix to verify
+        whichDrive = "error";
+        emit error("failed for removing wrong drive");
+    }
 }
 
 
@@ -171,12 +178,16 @@ bool wiperClass::rmHPA(){//hdparm "remove HPA if present"
 bool wiperClass::initWipe(){
     //set security for the drive
     qDebug("initializing Security Features");
-    toolBox->start("sudo hdparm --user-master u --security-set-pass Eins /dev/sdb");
+//    toolBox->start("sudo hdparm --user-master u --security-set-pass Eins /dev/sdb");
+    QString getMe = QString("sudo hdparm --user-master u --security-set-pass Eins ") + whichDrive;
+    toolBox->start(getMe);
     qDebug("waiting for security to set password");
     toolBox->waitForFinished(-1);
     qDebug("security set");
     QString smartData = toolBox->readAllStandardOutput();
     qDebug() << smartData;
+    smartData = toolBox->readAllStandardError();
+    qDebug() << smartData << endl;
 
     //change to new emit
     //emit statusUpdate(smartData);
@@ -186,7 +197,9 @@ bool wiperClass::initWipe(){
 
     //change to new emit
     //emit statusUpdate("Secure Erase is erasing the data.  Will continue when complete.");
-    toolBox->start("sudo time hdparm --user-master u --yes-i-know-what-i-am-doing --security-erase Eins /dev/sdb");
+//    toolBox->start("sudo time hdparm --user-master u --yes-i-know-what-i-am-doing --security-erase Eins /dev/sdb");
+    getMe = QString("sudo time hdparm --user-master u --yes-i-know-what-i-am-doing --security-erase Eins ") + whichDrive;
+    toolBox->start(getMe);
     qDebug("waiting for Secure Erase to start");
     qDebug("Secure Erase underway");
     toolBox->waitForFinished(-1);
@@ -208,7 +221,9 @@ bool initWipe(QString newMethod){//for other wipe methods
 
 bool wiperClass::smartDrive2(){
     qDebug("running 2nd smart check");
-    toolBox->start("sudo smartctl -a /dev/sdb");
+//    toolBox->start("sudo smartctl -a /dev/sdb");
+    QString getMe = QString("sudo smartctl -a ") + whichDrive;
+    toolBox->start(getMe);
     qDebug("waiting for smart");
     toolBox->waitForFinished(3000);
     qDebug("2nd smart check complete");
